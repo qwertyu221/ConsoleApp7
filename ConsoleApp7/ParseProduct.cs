@@ -11,65 +11,55 @@ namespace ConsoleApp7
 {
     public class ParseProduct
     {
-        public async Task ParseProd() {
+        public async Task ParseProd(string adress) {
 
             List<IElement> listOfPage = new List<IElement>();
 
+            adress = "https://www.toy.ru" + adress;
 
-            await TakeInfoAsync("nav.breadcrumb");
-            await TakeInfoAsync("h1.detail-name");
-            await TakeInfoAsync("span.old-price");
-            await TakeInfoAsync("span.price");
-            await TakeInfoAsync("span.ok");
-            await TakeInfoAsync("div.col-12.select-city-link");
-            await TakeInfoAsync("div.col-12.col-md-10.col-lg-7");
+            //var adress = "https://www.toy.ru/catalog/mashinki_iz_multfilmov/fortnite_fnt0163_mashina_quadcrasher/";
 
+
+            var config = Configuration.Default.WithDefaultLoader();   //парсинг имени
+            var context = BrowsingContext.New(config);
+            var document = await context.OpenAsync(adress);
+
+            await TakeInfoAsync("nav.breadcrumb", adress);
+            await TakeInfoAsync("h1.detail-name", adress);
+            await TakeInfoAsync("span.old-price", adress);
+            await TakeInfoAsync("span.price", adress);
+            await TakeInfoAsync("span.ok", adress);
+            await TakeInfoAsync("div.col-12.select-city-link a", adress);
+            await TakeInfoAsync("div.col-12.col-md-10.col-lg-7", adress);
+            await TakePngAsync("img.img-fluid", adress);
 
             foreach (var i in listOfPage) {
                 Console.WriteLine(i.TextContent.Trim());
             }
 
-
-
             void AddToList (ref List<IElement> listOfPage, ref IElement cells) {
-
                 listOfPage.Add(cells);
             }
 
-            async Task TakeInfoAsync (string cellSelector) {
-
-
-                var config = Configuration.Default.WithDefaultLoader();   //парсинг имени
-                var address = "https://www.toy.ru/catalog/mashinki_iz_multfilmov/fortnite_fnt0163_mashina_quadcrasher/";
-                var context = BrowsingContext.New(config);
-                var document = await context.OpenAsync(address);
-
-
-
+            async Task TakeInfoAsync (string cellSelector, string address) {
                 var cells = document.QuerySelector(cellSelector);
 
                 if (cells != null) {
                     AddToList(ref listOfPage, ref cells);
-                }
-
-
-                
-
-
-               
+                }               
             }
 
+            async Task TakePngAsync (string cellSelector, string address) {
+                
+                var cells = document.QuerySelectorAll(cellSelector);
+                 
+                foreach (var i in cells) { 
+                    var pngLink = i.Attributes["src"].Value; 
+                    Console.WriteLine(pngLink); 
+                }
 
-           
-
-
+            }
         }
-
-       
-
-
     }
-
-        
 }
 
