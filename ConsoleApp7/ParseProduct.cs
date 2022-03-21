@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleApp7
@@ -12,6 +13,8 @@ namespace ConsoleApp7
     public class ParseProduct
     {
         public async Task ParseProd(string adress) {
+            Thread thread = Thread.CurrentThread;
+            Console.WriteLine(thread.ManagedThreadId);
 
             List<IElement> listOfPage = new List<IElement>();
 
@@ -33,11 +36,12 @@ namespace ConsoleApp7
             await TakeInfoAsync("div.col-12.col-md-10.col-lg-7", adress);
             await TakePngAsync("img.img-fluid", adress);
 
-            foreach (var i in listOfPage) {
-                Console.WriteLine(i.TextContent.Trim());
-            }
+            //foreach (var i in listOfPage) {
+            //    Console.WriteLine(i.TextContent.Trim());
+            //}
 
             void AddToList (ref List<IElement> listOfPage, ref IElement cells) {
+                //Console.WriteLine(cells.TextContent.Trim());
                 listOfPage.Add(cells);
             }
 
@@ -55,7 +59,7 @@ namespace ConsoleApp7
                  
                 foreach (var i in cells) { 
                     var pngLink = i.Attributes["src"].Value; 
-                    Console.WriteLine(pngLink); 
+                    //Console.WriteLine(pngLink); 
                 }
 
             }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleApp7
@@ -36,18 +37,20 @@ namespace ConsoleApp7
 
             var smth= links.Distinct();
 
+            Thread thread = Thread.CurrentThread;
+
             foreach (var i in smth) {
-                Console.WriteLine(i);
-                //await Task.Run(() => parseProduct.ParseProd(i));
+                Console.WriteLine(thread.ManagedThreadId);
+                await Task.Run(() => parseProduct.ParseProd(i));
             }
 
             var pageSelector = "a.page-link";
             var nextPage =  document.QuerySelectorAll(pageSelector).Last();
 
-            Console.WriteLine();
+          
 
             var strNextPage = nextPage.GetAttribute("href");
-            Console.WriteLine(strNextPage);
+            //Console.WriteLine(strNextPage);
             if (strNextPage != "#") {
                 await Task.Run(() => GetToyLink("https://www.toy.ru" + strNextPage));
             } 

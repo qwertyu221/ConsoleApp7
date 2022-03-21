@@ -22,14 +22,19 @@ namespace ConsoleApp7
 
 
             //void Print () {
-            //    Thread.Sleep(1000);     // имитация продолжительной работы
-            //    Console.WriteLine("Hello METANIT.COM");
+            //    Thread.Sleep(5000);     // имитация продолжительной работы
+            //    Console.WriteLine("Hello1");
+            //}
+            //void Print2 () {
+            //    Thread.Sleep(2000);     // имитация продолжительной работы
+            //    Console.WriteLine("Hello2");
             //}
 
             //// определение асинхронного метода
             //async Task PrintAsync () {
             //    Console.WriteLine("Начало метода PrintAsync"); // выполняется синхронно
-            //    await Task.Run(() => Print());                // выполняется асинхронно
+            //    await Task.Run(() => Print());
+            //    await Task.Run(() => Print2());    // выполняется асинхронно
             //    Console.WriteLine("Конец метода PrintAsync");
             //}
 
