@@ -1,5 +1,6 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
+using AngleSharp.Js;
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace ConsoleApp7
 {
     class Program
     {
-        public static async Task Main (string[] args) {
+        async public static Task Main (string[] args) {
 
             //ParseProduct parse = new ParseProduct();
 
@@ -41,9 +42,11 @@ namespace ConsoleApp7
             ParsePage parsePage = new ParsePage();
 
 
-            String firstPage = "https://www.toy.ru/catalog/boy_transport/";
+            string firstPage = "https://www.toy.ru/catalog/boy_transport/";
 
             await parsePage.GetToyLink(firstPage);
+            //await Task.Run(() => (parsePage.GetToyLink(firstPage)));
+            
 
         }
     }

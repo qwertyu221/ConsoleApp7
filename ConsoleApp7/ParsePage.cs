@@ -1,4 +1,5 @@
 ﻿using AngleSharp;
+using AngleSharp.Js;
 
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,13 @@ namespace ConsoleApp7
 {
     class ParsePage
     {
-        public async Task GetToyLink (string adress) {
-
-            ParseProduct parseProduct = new ParseProduct();
-
-         
+        async public Task GetToyLink(string adress) {
 
             
+
+
+            //string adress = "https://www.toy.ru/catalog/boy_transport/";
+
 
             var config = Configuration.Default.WithDefaultLoader();   //парсинг имени
             var context = BrowsingContext.New(config);
@@ -37,31 +38,42 @@ namespace ConsoleApp7
 
             var smth= links.Distinct();
 
-            Thread thread = Thread.CurrentThread;
+           
 
             foreach (var i in smth) {
-                Console.WriteLine(thread.ManagedThreadId);
-                await Task.Run(() => parseProduct.ParseProd(i));
+                ParseProduct parseProduct = new ParseProduct();
+               
+            
+                await parseProduct.ParseProd(i);
             }
 
             var pageSelector = "a.page-link";
-            var nextPage =  document.QuerySelectorAll(pageSelector).Last();
+            var nextPage = document.QuerySelectorAll(pageSelector).Last();
 
-          
+
 
             var strNextPage = nextPage.GetAttribute("href");
-            //Console.WriteLine(strNextPage);
+            Console.WriteLine(strNextPage);
             if (strNextPage != "#") {
-                await Task.Run(() => GetToyLink("https://www.toy.ru" + strNextPage));
-            } 
+                await GetToyLink("https://www.toy.ru" + strNextPage);
+            }
 
-           
-            
+            WriteCvs writeCvs = new WriteCvs();
 
-            
+
+            try {
+                writeCvs.Push();
+            } catch {
+                
+                Console.WriteLine("Запись в файл уже произведена");
+            }
+            Console.WriteLine("done");
+
+
+
             //nextPageParse.;
 
-            
+
 
 
             //foreach (var i in links2) {

@@ -12,11 +12,13 @@ namespace ConsoleApp7
 {
     public class ParseProduct
     {
-        public async Task ParseProd(string adress) {
-            Thread thread = Thread.CurrentThread;
-            Console.WriteLine(thread.ManagedThreadId);
+        async public Task ParseProd(string adress) {
 
-            List<IElement> listOfPage = new List<IElement>();
+        
+
+            List<string> listOfPage = new List<string>();
+
+            List<string> listOfpng = new List<string>();
 
             adress = "https://www.toy.ru" + adress;
 
@@ -27,38 +29,45 @@ namespace ConsoleApp7
             var context = BrowsingContext.New(config);
             var document = await context.OpenAsync(adress);
 
-            await TakeInfoAsync("nav.breadcrumb", adress);
-            await TakeInfoAsync("h1.detail-name", adress);
-            await TakeInfoAsync("span.old-price", adress);
-            await TakeInfoAsync("span.price", adress);
-            await TakeInfoAsync("span.ok", adress);
-            await TakeInfoAsync("div.col-12.select-city-link a", adress);
-            await TakeInfoAsync("div.col-12.col-md-10.col-lg-7", adress);
-            await TakePngAsync("img.img-fluid", adress);
+            TakeInfoAsync("nav.breadcrumb");
+            TakeInfoAsync("h1.detail-name");
+            TakeInfoAsync("span.old-price");
+            TakeInfoAsync("span.price");
+            TakeInfoAsync("span.ok");
+            TakeInfoAsync("div.col-12.select-city-link a");
+            TakeInfoAsync("div.col-12.col-md-10.col-lg-7");
+            TakePngAsync("img.img-fluid");
+
+            WriteCvs writeCvs = new WriteCvs();
+
+            writeCvs.Writeinfile(listOfPage, listOfpng, adress);
 
             //foreach (var i in listOfPage) {
-            //    Console.WriteLine(i.TextContent.Trim());
+            //    Console.WriteLine(i);
             //}
 
-            void AddToList (ref List<IElement> listOfPage, ref IElement cells) {
+            void AddToList (string cells) {
                 //Console.WriteLine(cells.TextContent.Trim());
                 listOfPage.Add(cells);
             }
 
-            async Task TakeInfoAsync (string cellSelector, string address) {
+            void TakeInfoAsync (string cellSelector) {
                 var cells = document.QuerySelector(cellSelector);
 
                 if (cells != null) {
-                    AddToList(ref listOfPage, ref cells);
-                }               
+                    AddToList(cells.TextContent.Trim());
+                } else {
+                    AddToList(" ");
+                }        
             }
 
-            async Task TakePngAsync (string cellSelector, string address) {
+            void TakePngAsync (string cellSelector) {
                 
                 var cells = document.QuerySelectorAll(cellSelector);
                  
                 foreach (var i in cells) { 
-                    var pngLink = i.Attributes["src"].Value; 
+                    var pngLink = i.Attributes["src"].Value;
+                    listOfpng.Add(pngLink);
                     //Console.WriteLine(pngLink); 
                 }
 
