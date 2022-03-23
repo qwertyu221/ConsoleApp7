@@ -18,6 +18,15 @@ namespace ConsoleApp7
         public string pnglinks { get; set; }
         public string link { get; set; }
 
+        //TakeInfoAsync ("div.col-12.select-city-link a");
+        //TakeInfoAsync ("nav.breadcrumb");
+        //TakeInfoAsync ("h1.detail-name");
+        //TakeInfoAsync ("span.old-price");
+        //TakeInfoAsync ("span.price");
+        //TakeInfoAsync ("span.ok");
+        //TakeInfoAsync ("div.col-12.col-md-10.col-lg-7");
+        //TakePngAsync ("img.img-fluid");
+
         public Product (string city, string breadcrump, string name, string price, string oldprice, string exist, string pnglinks, string link) {
             this.city = city;
             this.breadcrump = breadcrump;

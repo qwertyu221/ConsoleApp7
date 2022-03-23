@@ -22,20 +22,18 @@ namespace ConsoleApp7
 
             adress = "https://www.toy.ru" + adress;
 
-            //var adress = "https://www.toy.ru/catalog/mashinki_iz_multfilmov/fortnite_fnt0163_mashina_quadcrasher/";
-
-
+            
             var config = Configuration.Default.WithDefaultLoader();   //парсинг имени
             var context = BrowsingContext.New(config);
             var document = await context.OpenAsync(adress);
 
+            TakeInfoAsync("div.col-12.select-city-link a");
             TakeInfoAsync("nav.breadcrumb");
             TakeInfoAsync("h1.detail-name");
-            TakeInfoAsync("span.old-price");
             TakeInfoAsync("span.price");
+            TakeInfoAsync("span.old-price");
             TakeInfoAsync("span.ok");
-            TakeInfoAsync("div.col-12.select-city-link a");
-            TakeInfoAsync("div.col-12.col-md-10.col-lg-7");
+            //TakeInfoAsync("div.col-12.col-md-10.col-lg-7");
             TakePngAsync("img.img-fluid");
 
             WriteCvs writeCvs = new WriteCvs();
@@ -47,11 +45,10 @@ namespace ConsoleApp7
             //}
 
             void AddToList (string cells) {
-                //Console.WriteLine(cells.TextContent.Trim());
                 listOfPage.Add(cells);
             }
 
-            void TakeInfoAsync (string cellSelector) {
+            void TakeInfoAsync (string cellSelector) { // получение даннных товара
                 var cells = document.QuerySelector(cellSelector);
 
                 if (cells != null) {
@@ -61,14 +58,13 @@ namespace ConsoleApp7
                 }        
             }
 
-            void TakePngAsync (string cellSelector) {
+            void TakePngAsync (string cellSelector) { // получение ссылок на картинки
                 
                 var cells = document.QuerySelectorAll(cellSelector);
                  
                 foreach (var i in cells) { 
                     var pngLink = i.Attributes["src"].Value;
                     listOfpng.Add(pngLink);
-                    //Console.WriteLine(pngLink); 
                 }
 
             }

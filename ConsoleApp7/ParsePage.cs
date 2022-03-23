@@ -24,9 +24,11 @@ namespace ConsoleApp7
             var context = BrowsingContext.New(config);
             var document = await context.OpenAsync(adress);
 
+           
+
             var cellSelector = "div.row.mt-2 a";
 
-            var cells = document.QuerySelectorAll(cellSelector); // ошибка
+            var cells = document.QuerySelectorAll(cellSelector); // получение списка товаров со страницы
 
             List<String> links = new List<String>();
             
@@ -36,23 +38,23 @@ namespace ConsoleApp7
                 links.Add(pngLink);
             }
 
-            var smth= links.Distinct();
+            var smth= links.Distinct(); // очистка повторяющихся ссылок
 
            
 
             foreach (var i in smth) {
-                ParseProduct parseProduct = new ParseProduct();
+                ParseProduct parseProduct = new ParseProduct(); // запуск чтения каждого товара со страницы
                
             
                 await parseProduct.ParseProd(i);
             }
 
             var pageSelector = "a.page-link";
-            var nextPage = document.QuerySelectorAll(pageSelector).Last();
+            var nextPage = document.QuerySelectorAll(pageSelector).Last(); // получение следующей страницы
 
 
 
-            var strNextPage = nextPage.GetAttribute("href");
+            var strNextPage = nextPage.GetAttribute("href"); // пока кнопка активна происходит повторный вызов 
             Console.WriteLine(strNextPage);
             if (strNextPage != "#") {
                 await GetToyLink("https://www.toy.ru" + strNextPage);
@@ -62,7 +64,7 @@ namespace ConsoleApp7
 
 
             try {
-                writeCvs.Push();
+                writeCvs.Push(); // окончательная запись в файл
             } catch {
                 
                 Console.WriteLine("Запись в файл уже произведена");
